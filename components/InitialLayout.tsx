@@ -1,6 +1,8 @@
+import { COLORS } from '@/constants/theme'
 import { useAuth } from '@clerk/clerk-expo'
 import { Slot, Stack, useRouter, useSegments } from 'expo-router'
 import { useEffect } from 'react'
+import { ActivityIndicator } from 'react-native'
 
 const InitialLayout = () => {
   const { isLoaded, isSignedIn } = useAuth()
@@ -16,7 +18,8 @@ const InitialLayout = () => {
     else if (isSignedIn && isAuthRoute) router.replace('/(tabs)')
   }, [isLoaded, isSignedIn, segments, router])
 
-  if (!isLoaded) return null
+  if (!isLoaded)
+    return <ActivityIndicator size="large" color={COLORS.secondary} />
 
   return (
     <Stack screenOptions={{ headerShown: false }}>

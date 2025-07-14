@@ -13,7 +13,7 @@ const Login = () => {
     <View style={styles.container}>
       <View style={styles.brandSection}>
         <View style={styles.logoContainer}>
-          <Ionicons name="person-sharp" size={32} color={COLORS.primary} />
+          <Ionicons name="keypad-outline" size={32} color={COLORS.primary} />
         </View>
         <Text style={styles.appName}>konekt</Text>
         <Text style={styles.tagline}>Connect with your friends</Text>
