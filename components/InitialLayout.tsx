@@ -16,7 +16,7 @@ const InitialLayout = () => {
 
     if (!isSignedIn && !isAuthRoute) router.replace('/(auth)/login')
     else if (isSignedIn && isAuthRoute) router.replace('/(tabs)')
-  }, [isLoaded, isSignedIn, segments, router])
+  }, [isLoaded, isSignedIn, segments])
 
   if (!isLoaded)
     return <ActivityIndicator size="large" color={COLORS.secondary} />
