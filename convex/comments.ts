@@ -1,5 +1,5 @@
 import { ConvexError, v } from 'convex/values'
-import { mutation } from './_generated/server'
+import { mutation, query } from './_generated/server'
 import { getAuthenticatedUser } from './users'
 
 export const addComment = mutation({
@@ -37,7 +37,7 @@ export const addComment = mutation({
   },
 })
 
-export const getComments = mutation({
+export const getComments = query({
   args: { postId: v.id('posts') },
   handler: async (ctx, args) => {
     const comments = await ctx.db

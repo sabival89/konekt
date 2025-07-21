@@ -4,10 +4,12 @@ import { Id } from '@/convex/_generated/dataModel'
 import { styles } from '@/styles/feed.styles'
 import { Ionicons } from '@expo/vector-icons'
 import { useMutation } from 'convex/react'
+import { formatDistanceToNow } from 'date-fns'
 import { Image } from 'expo-image'
 import { Link } from 'expo-router'
 import { useState } from 'react'
 import { Text, TouchableOpacity, View } from 'react-native'
+import CommentsModal from './CommentsModal'
 
 type PostProps = {
   post: {
@@ -32,6 +34,8 @@ type PostProps = {
 const Post = ({ post }: PostProps) => {
   const [isLiked, setIsLiked] = useState(post.isLiked || false)
   const [likesCount, setLikesCount] = useState(post.likes)
+  const [commentsCount, setCommentsCount] = useState(post.comments)
+  const [showComments, setShowComments] = useState(false)
 
   const toggleLike = useMutation(api.posts.toggleLike)
 
@@ -88,7 +92,7 @@ const Post = ({ post }: PostProps) => {
               color={isLiked ? COLORS.primary : COLORS.white}
             />
           </TouchableOpacity>
-          <TouchableOpacity onPress={() => null}>
+          <TouchableOpacity onPress={() => setShowComments(true)}>
             <Ionicons
               name="chatbubble-outline"
               size={22}
@@ -115,7 +119,7 @@ const Post = ({ post }: PostProps) => {
         )}
 
         {post.comments > 0 && (
-          <TouchableOpacity onPress={() => null}>
+          <TouchableOpacity onPress={() => setShowComments(true)}>
             <Text style={styles.commentsText}>
               View all {post.comments} comments
             </Text>
@@ -123,10 +127,16 @@ const Post = ({ post }: PostProps) => {
         )}
 
         <Text style={styles.timeAgo}>
-          {/* {formatDistanceToNow(post._creationTime, { addSuffix: true })} */}
-          2 hours ago
+          {formatDistanceToNow(post._creationTime, { addSuffix: true })}
         </Text>
       </View>
+
+      <CommentsModal
+        postId={post._id!}
+        visible={showComments}
+        onClose={() => setShowComments(false)}
+        onCommentAdded={() => setCommentsCount(commentsCount + 1)}
+      />
     </View>
   )
 }
