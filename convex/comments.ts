@@ -37,7 +37,27 @@ export const addComment = mutation({
   },
 })
 
-export const getPostComments = mutation({
+export const getComments = mutation({
   args: { postId: v.id('posts') },
-  handler: async (ctx, args) => {},
+  handler: async (ctx, args) => {
+    const comments = await ctx.db
+      .query('comments')
+      .withIndex('by_post', (q) => q.eq('postId', args.postId))
+      .collect()
+
+    const commentsWithInfo = await Promise.all(
+      comments.map(async (comment) => {
+        const user = await ctx.db.get(comment.userId)
+
+        return {
+          ...comment,
+          user: {
+            fullname: user!.fullname || '',
+            image: user!.image,
+          },
+        }
+      }),
+    )
+    return commentsWithInfo
+  },
 })
