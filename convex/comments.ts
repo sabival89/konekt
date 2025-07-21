@@ -19,6 +19,25 @@ export const addComment = mutation({
       userId,
     })
 
+    // Increment the comment count on the post
     await ctx.db.patch(postId, { comments: post.comments + 1 })
+
+    if (userId !== post.userId) {
+      // Create a notification for the post author if the commenter is not the author
+      await ctx.db.insert('notifications', {
+        receiverId: post.userId,
+        senderId: userId,
+        type: 'comment',
+        postId,
+        commentId,
+      })
+    }
+
+    return commentId
   },
+})
+
+export const getPostComments = mutation({
+  args: { postId: v.id('posts') },
+  handler: async (ctx, args) => {},
 })
