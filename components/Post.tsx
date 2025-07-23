@@ -77,7 +77,7 @@ const Post = ({ post }: PostProps) => {
         </Link>
 
         <TouchableOpacity>
-          <Ionicons name="ellipsis-horizontal" size={20} color={COLORS.white} />
+          <Ionicons name="trash-outline" size={20} color={COLORS.primary} />
         </TouchableOpacity>
       </View>
 
