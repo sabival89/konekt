@@ -6,7 +6,7 @@ import { getAuthenticatedUser } from './users'
  * It retrieves notifications related to likes, comments, and follows.
  */
 export const getNotifications = query({
-  handler: async (ctx, args) => {
+  handler: async (ctx) => {
     const currentUser = await getAuthenticatedUser(ctx)
 
     const notifications = await ctx.db
