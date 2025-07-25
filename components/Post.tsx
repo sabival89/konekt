@@ -12,7 +12,7 @@ import { useState } from 'react'
 import { Text, TouchableOpacity, View } from 'react-native'
 import CommentsModal from './CommentsModal'
 
-type PostProps = {
+export type PostProps = {
   post: {
     _id?: Id<'posts'>
     _creationTime: number

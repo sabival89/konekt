@@ -25,12 +25,7 @@ type CommentsModalProps = {
   onCommentAdded: () => void
 }
 
-const CommentsModal = ({
-  postId,
-  visible,
-  onClose,
-  onCommentAdded,
-}: CommentsModalProps) => {
+const CommentsModal = ({ postId, visible, onClose }: CommentsModalProps) => {
   const [newComment, setNewComment] = useState('')
   const comments = useQuery(api.comments.getComments, { postId })
   const addComment = useMutation(api.comments.addComment)
