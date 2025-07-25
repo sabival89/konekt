@@ -162,6 +162,11 @@ export const deletePost = mutation({
       .withIndex('by_post', (q) => q.eq('postId', args.postId))
       .collect()
 
+    const notifications = await ctx.db
+      .query('notifications')
+      .withIndex('by_post', (q) => q.eq('postId', args.postId))
+      .collect()
+
     // delete all likes
     postLikes.forEach(async (like) => await ctx.db.delete(like._id))
 
@@ -170,6 +175,11 @@ export const deletePost = mutation({
 
     // delete all bookmarks
     postBookmarks.forEach(async (bookmark) => await ctx.db.delete(bookmark._id))
+
+    // delete all notifications related to the post
+    notifications.forEach(async (notification) => {
+      await ctx.db.delete(notification._id)
+    })
 
     // delete the image from storage
     if (post.storageId) await ctx.storage.delete(post.storageId)
