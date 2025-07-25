@@ -71,7 +71,7 @@ const CreateScreen = () => {
 
       router.push('/(tabs)')
     } catch (error) {
-      console.log('Error sharing post', { error })
+      console.error('Error sharing post', { error })
     } finally {
       setIsSharing(false)
     }
@@ -98,8 +98,6 @@ const CreateScreen = () => {
       </View>
     )
   }
-
-  console.log('Selected Image:', selectedImage)
 
   return (
     <KeyboardAvoidingView
