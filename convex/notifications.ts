@@ -6,7 +6,7 @@ import { getAuthenticatedUser } from './users'
  * It retrieves notifications related to likes, comments, and follows.
  */
 export const getNotifications = query({
-  handler: async (ctx, args) => {
+  handler: async (ctx) => {
     const currentUser = await getAuthenticatedUser(ctx)
 
     const notifications = await ctx.db
@@ -18,6 +18,10 @@ export const getNotifications = query({
     const notificationsWithInfo = await Promise.all(
       notifications.map(async (notification) => {
         const sender = await ctx.db.get(notification.senderId)
+
+        if (!sender) {
+          throw new Error('Sender not found for notification')
+        }
 
         let post = null
         let comment = null
@@ -33,9 +37,9 @@ export const getNotifications = query({
         return {
           ...notification,
           sender: {
-            _id: sender?._id,
-            username: sender?.username,
-            image: sender?.image,
+            _id: sender._id,
+            username: sender.username,
+            image: sender.image,
           },
           comment: {
             content: comment?.content,
