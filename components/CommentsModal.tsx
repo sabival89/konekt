@@ -22,7 +22,6 @@ type CommentsModalProps = {
   postId: Id<'posts'>
   visible: boolean
   onClose: () => void
-  onCommentAdded: () => void
 }
 
 const CommentsModal = ({ postId, visible, onClose }: CommentsModalProps) => {

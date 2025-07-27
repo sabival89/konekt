@@ -35,8 +35,6 @@ export type PostProps = {
 const Post = ({ post }: PostProps) => {
   const [isLiked, setIsLiked] = useState(post.isLiked || false)
   const [isBookmarked, setIsBookmarked] = useState(post.isBookmarked)
-  const [likesCount, setLikesCount] = useState(post.likes)
-  const [commentsCount, setCommentsCount] = useState(post.comments)
   const [showComments, setShowComments] = useState(false)
 
   const { user } = useUser()
@@ -61,7 +59,6 @@ const Post = ({ post }: PostProps) => {
     try {
       const newIsLiked = await toggleLike({ postId: post._id! })
       setIsLiked(newIsLiked)
-      setLikesCount(newIsLiked ? likesCount + 1 : likesCount - 1)
     } catch (error) {
       console.error('Error toggling like:', error)
     }
@@ -183,7 +180,6 @@ const Post = ({ post }: PostProps) => {
         postId={post._id!}
         visible={showComments}
         onClose={() => setShowComments(false)}
-        onCommentAdded={() => setCommentsCount(commentsCount + 1)}
       />
     </View>
   )
