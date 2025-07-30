@@ -6,12 +6,20 @@ import { api } from '@/convex/_generated/api'
 import { useAuth } from '@clerk/clerk-expo'
 import { Ionicons } from '@expo/vector-icons'
 import { useQuery } from 'convex/react'
-import React from 'react'
-import { FlatList, Text, TouchableOpacity, View } from 'react-native'
+import React, { useState } from 'react'
+import {
+  FlatList,
+  RefreshControl,
+  Text,
+  TouchableOpacity,
+  View,
+} from 'react-native'
 import { styles } from '../../styles/feed.styles'
 
 export default function Index() {
   const { signOut } = useAuth()
+
+  const [refreshing, setRefreshing] = useState(false)
 
   const posts = useQuery(api.posts.getFeedPosts)
 
@@ -21,6 +29,14 @@ export default function Index() {
 
   if (posts.length === 0) {
     return <NoPostsFound />
+  }
+
+  const onRefresh = () => {
+    setRefreshing(true)
+    // Use tanstack query to refresh
+    setTimeout(() => {
+      setRefreshing(false)
+    }, 2000)
   }
 
   return (
@@ -39,6 +55,13 @@ export default function Index() {
         showsVerticalScrollIndicator={false}
         contentContainerStyle={{ paddingBottom: 60 }}
         ListHeaderComponent={() => <Stories />}
+        refreshControl={
+          <RefreshControl
+            refreshing={refreshing}
+            onRefresh={onRefresh}
+            tintColor={COLORS.primary}
+          />
+        }
       />
     </View>
   )
